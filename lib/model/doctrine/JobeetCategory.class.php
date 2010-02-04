@@ -20,4 +20,8 @@ class JobeetCategory extends BaseJobeetCategory {
 
 		return Doctrine::getTable('JobeetJob')->getActiveJobs($q);
 	}
+
+	public function getSlug() {
+		return Jobeet::slugify($this->getName());
+	}
 }
