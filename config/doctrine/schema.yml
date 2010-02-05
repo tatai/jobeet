@@ -57,6 +57,10 @@ JobeetAffiliate:
       foreign: affiliate_id
       type: many
 JobeetCategory:
+  actAs:
+    Timestampable: ~
+    Sluggable:
+      fields: [name]
   connection: doctrine
   tableName: jobeet_category
   columns:

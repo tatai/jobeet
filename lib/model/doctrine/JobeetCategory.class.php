@@ -18,13 +18,14 @@ class JobeetCategory extends BaseJobeetCategory {
 			->where('j.category_id = ?', $this->getId())
 			->limit($max);
 
-		return Doctrine::getTable('JobeetJob')->getActiveJobs($q);
+	return Doctrine::getTable('JobeetJob')->getActiveJobs($q);
 	}
 
+/*
 	public function getSlug() {
 		return Jobeet::slugify($this->getName());
 	}
-
+*/
 	public function countActiveJobs() {
 		$q = Doctrine_Query::create()
 			->from('JobeetJob j')
