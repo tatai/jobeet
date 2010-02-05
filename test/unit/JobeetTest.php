@@ -1,9 +1,14 @@
 <?php
 require_once(dirname(__FILE__) . '/../bootstrap/unit.php');
 
-$t = new lime_test(6);
+$t = new lime_test(9);
  
 $t->comment('::slugify()');
+$t->is(Jobeet::slugify(''), 'n-a', '::slugify() converts the empty string to n-a');
+$t->is(Jobeet::slugify(' - '), 'n-a', '::slugify() converts a string that only contains non-ASCII characters to n-a');
+
+$t->is(Jobeet::slugify('Développeur Web'), 'developpeur-web', '::slugify() removes accents');
+
 $t->is(Jobeet::slugify('Sensio'), 'sensio', '::slugify() converts all characters to lower case');
 $t->is(Jobeet::slugify('sensio labs'), 'sensio-labs', '::slugify() replaces a white space by a -');
 $t->is(Jobeet::slugify('sensio   labs'), 'sensio-labs', '::slugify() replaces several white spaces by a single -');
