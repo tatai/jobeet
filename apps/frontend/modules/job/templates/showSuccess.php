@@ -35,6 +35,8 @@
   </div>
  
   <div style="padding: 20px 0">
-    <a href="<?php echo url_for('job_edit', $job) ?>">Edit</a>
+    <?php if ($sf_request->getParameter('token') == $job->getToken()): ?>
+      <?php include_partial('job/admin', array('job' => $job)) ?>
+    <?php endif; ?>
   </div>
 </div>
