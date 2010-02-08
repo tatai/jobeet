@@ -9,7 +9,7 @@
   <h1><?php echo $category ?></h1>
 </div>
  
-<?php include_partial('job/list', array('jobs' => $category->getActiveJobs())) ?>
+<?php include_partial('job/list', array('jobs' => $pager->getResults())) ?>
 
 <?php if ($pager->haveToPaginate()): ?>
   <div class="pagination">

@@ -56,6 +56,14 @@ $browser->info('2 - The job page')->
 		isParameter('location_slug', 'paris-france')->
 		isParameter('position_slug', 'web-developer')->
 		isParameter('id', $browser->getMostRecentProgrammingJob()->getId())->
-	end()
-;
+	end()->
+
+	info('	2.2 - A non-existent job forwards the user to a 404')->
+		get('/job/foo-inc/milano-italy/0/painter')->
+		with('response')->isStatusCode(404)->
+ 
+	info('	2.3 - An expired job page forwards the user to a 404')->
+		get(sprintf('/job/sensio-labs/paris-france/%d/web-developer', $browser->getExpiredJob()->getId()))->
+		with('response')->isStatusCode(404)
+
 ?>
