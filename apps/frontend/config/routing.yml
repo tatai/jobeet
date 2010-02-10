@@ -38,6 +38,13 @@ api_jobs:
   requirements:
     sf_format: (?:xml|json|yaml)
 
+affiliate:
+  class:   sfDoctrineRouteCollection
+  options:
+    model: JobeetAffiliate
+    actions: [new, create]
+    object_actions: { wait: get }
+
 # default rules
 homepage:
   url:   /
