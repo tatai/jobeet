@@ -1,256 +1,53 @@
-JobeetAffiliate:
-  connection: doctrine
-  tableName: jobeet_affiliate
-  columns:
-    id:
-      type: integer(8)
-      fixed: false
-      unsigned: false
-      primary: true
-      autoincrement: true
-    url:
-      type: string(255)
-      fixed: false
-      unsigned: false
-      primary: false
-      notnull: true
-      autoincrement: false
-    email:
-      type: string(255)
-      fixed: false
-      unsigned: false
-      primary: false
-      notnull: true
-      autoincrement: false
-    token:
-      type: string(255)
-      fixed: false
-      unsigned: false
-      primary: false
-      notnull: true
-      autoincrement: false
-    is_active:
-      type: integer(1)
-      fixed: false
-      unsigned: false
-      primary: false
-      default: '0'
-      notnull: true
-      autoincrement: false
-    created_at:
-      type: timestamp(25)
-      fixed: false
-      unsigned: false
-      primary: false
-      notnull: true
-      autoincrement: false
-    updated_at:
-      type: timestamp(25)
-      fixed: false
-      unsigned: false
-      primary: false
-      notnull: true
-      autoincrement: false
-  relations:
-    JobeetCategoryAffiliate:
-      local: id
-      foreign: affiliate_id
-      type: many
 JobeetCategory:
   actAs:
     Timestampable: ~
-    Sluggable:
+    I18n:
       fields: [name]
-  connection: doctrine
-  tableName: jobeet_category
+      actAs:
+        Sluggable: { fields: [name], uniqueBy: [lang, name] }
   columns:
-    id:
-      type: integer(8)
-      fixed: false
-      unsigned: false
-      primary: true
-      autoincrement: true
-    name:
-      type: string(255)
-      fixed: false
-      unsigned: false
-      primary: false
-      notnull: true
-      autoincrement: false
-    created_at:
-      type: timestamp(25)
-      fixed: false
-      unsigned: false
-      primary: false
-      notnull: true
-      autoincrement: false
-    updated_at:
-      type: timestamp(25)
-      fixed: false
-      unsigned: false
-      primary: false
-      notnull: true
-      autoincrement: false
-  relations:
-    JobeetCategoryAffiliate:
-      local: id
-      foreign: category_id
-      type: many
-    JobeetJobs:
-      local: id
-      foreign: category_id
-      type: many
-JobeetCategoryAffiliate:
-  connection: doctrine
-  tableName: jobeet_category_affiliate
+    name: { type: string(255), notnull: true }
+ 
+ 
+JobeetJob:
+  actAs: { Timestampable: ~ }
   columns:
-    category_id:
-      type: integer(8)
-      fixed: false
-      unsigned: false
-      primary: true
-      autoincrement: false
-    affiliate_id:
-      type: integer(8)
-      fixed: false
-      unsigned: false
-      primary: true
-      autoincrement: false
+    category_id: { type: integer, notnull: true }
+    type: { type: string(255) }
+    company: { type: string(255), notnull: true }
+    logo: { type: string(255) }
+    url: { type: string(255) }
+    position: { type: string(255), notnull: true }
+    location: { type: string(255), notnull: true }
+    description: { type: string(4000), notnull: true }
+    how_to_apply: { type: string(4000), notnull: true }
+    token: { type: string(255), notnull: true, unique: true }
+    is_public: { type: boolean, notnull: true, default: 1 }
+    is_activated: { type: boolean, notnull: true, default: 0 }
+    email: { type: string(255), notnull: true }
+    expires_at: { type: timestamp, notnull: true }
   relations:
-    JobeetAffiliate:
+    JobeetCategory: { onDelete: CASCADE, local: category_id, foreign: id, foreignAlias: JobeetJobs }
+ 
+JobeetAffiliate:
+  actAs: { Timestampable: ~ }
+  columns:
+    url: { type: string(255), notnull: true }
+    email: { type: string(255), notnull: true, unique: true }
+    token: { type: string(255), notnull: true }
+    is_active: { type: boolean, notnull: true, default: 0 }
+  relations:
+    JobeetCategories:
+      class: JobeetCategory
+      refClass: JobeetCategoryAffiliate
       local: affiliate_id
-      foreign: id
-      type: one
-    JobeetCategory:
-      local: category_id
-      foreign: id
-      type: one
-JobeetJobs:
-  connection: doctrine
-  tableName: jobeet_job
+      foreign: category_id
+      foreignAlias: JobeetAffiliates
+ 
+JobeetCategoryAffiliate:
   columns:
-    id:
-      type: integer(8)
-      fixed: false
-      unsigned: false
-      primary: true
-      autoincrement: true
-    category_id:
-      type: integer(8)
-      fixed: false
-      unsigned: false
-      primary: false
-      notnull: true
-      autoincrement: false
-    type:
-      type: string(255)
-      fixed: false
-      unsigned: false
-      primary: false
-      notnull: false
-      autoincrement: false
-    company:
-      type: string(255)
-      fixed: false
-      unsigned: false
-      primary: false
-      notnull: true
-      autoincrement: false
-    logo:
-      type: string(255)
-      fixed: false
-      unsigned: false
-      primary: false
-      notnull: false
-      autoincrement: false
-    url:
-      type: string(255)
-      fixed: false
-      unsigned: false
-      primary: false
-      notnull: false
-      autoincrement: false
-    position:
-      type: string(255)
-      fixed: false
-      unsigned: false
-      primary: false
-      notnull: true
-      autoincrement: false
-    location:
-      type: string(255)
-      fixed: false
-      unsigned: false
-      primary: false
-      notnull: true
-      autoincrement: false
-    description:
-      type: string()
-      fixed: false
-      unsigned: false
-      primary: false
-      notnull: true
-      autoincrement: false
-    how_to_apply:
-      type: string()
-      fixed: false
-      unsigned: false
-      primary: false
-      notnull: true
-      autoincrement: false
-    token:
-      type: string(255)
-      fixed: false
-      unsigned: false
-      primary: false
-      notnull: true
-      autoincrement: false
-    is_public:
-      type: integer(1)
-      fixed: false
-      unsigned: false
-      primary: false
-      default: '1'
-      notnull: true
-      autoincrement: false
-    is_activated:
-      type: integer(1)
-      fixed: false
-      unsigned: false
-      primary: false
-      default: '0'
-      notnull: true
-      autoincrement: false
-    email:
-      type: string(255)
-      fixed: false
-      unsigned: false
-      primary: false
-      notnull: true
-      autoincrement: false
-    expires_at:
-      type: timestamp(25)
-      fixed: false
-      unsigned: false
-      primary: false
-      notnull: true
-      autoincrement: false
-    created_at:
-      type: timestamp(25)
-      fixed: false
-      unsigned: false
-      primary: false
-      notnull: true
-      autoincrement: false
-    updated_at:
-      type: timestamp(25)
-      fixed: false
-      unsigned: false
-      primary: false
-      notnull: true
-      autoincrement: false
+    category_id: { type: integer, primary: true }
+    affiliate_id: { type: integer, primary: true }
   relations:
-    JobeetCategory:
-      local: category_id
-      foreign: id
-      type: one
+    JobeetCategory: { onDelete: CASCADE, local: category_id, foreign: id }
+    JobeetAffiliate: { onDelete: CASCADE, local: affiliate_id, foreign: id }

@@ -14,4 +14,28 @@ class JobeetAffiliate extends BaseJobeetAffiliate {
 	public function __toString() {
 		return $this->getUrl();
 	}
+  public function preValidate($event)
+  {
+    $object = $event->getInvoker();
+ 
+    if (!$object->getToken())
+    {
+      $object->setToken(sha1($object->getEmail().rand(11111, 99999)));
+    }
+  }
+
+  public function getActiveJobs()
+  {
+    $q = Doctrine_Query::create()
+      ->select('j.*')
+      ->from('JobeetJob j')
+      ->leftJoin('j.JobeetCategory c')
+      ->leftJoin('c.JobeetAffiliates a')
+      ->where('a.id = ?', $this->getId());
+ 
+    $q = Doctrine::getTable('JobeetJob')->addActiveJobsQuery($q);
+ 
+    return $q->execute();
+  }
+
 }

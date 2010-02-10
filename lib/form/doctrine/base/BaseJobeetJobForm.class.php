@@ -26,8 +26,8 @@ abstract class BaseJobeetJobForm extends BaseFormDoctrine
       'description'  => new sfWidgetFormTextarea(),
       'how_to_apply' => new sfWidgetFormTextarea(),
       'token'        => new sfWidgetFormInputText(),
-      'is_public'    => new sfWidgetFormInputText(),
-      'is_activated' => new sfWidgetFormInputText(),
+      'is_public'    => new sfWidgetFormInputCheckbox(),
+      'is_activated' => new sfWidgetFormInputCheckbox(),
       'email'        => new sfWidgetFormInputText(),
       'expires_at'   => new sfWidgetFormDateTime(),
       'created_at'   => new sfWidgetFormDateTime(),
@@ -43,16 +43,20 @@ abstract class BaseJobeetJobForm extends BaseFormDoctrine
       'url'          => new sfValidatorString(array('max_length' => 255, 'required' => false)),
       'position'     => new sfValidatorString(array('max_length' => 255)),
       'location'     => new sfValidatorString(array('max_length' => 255)),
-      'description'  => new sfValidatorString(),
-      'how_to_apply' => new sfValidatorString(),
+      'description'  => new sfValidatorString(array('max_length' => 4000)),
+      'how_to_apply' => new sfValidatorString(array('max_length' => 4000)),
       'token'        => new sfValidatorString(array('max_length' => 255)),
-      'is_public'    => new sfValidatorInteger(array('required' => false)),
-      'is_activated' => new sfValidatorInteger(array('required' => false)),
+      'is_public'    => new sfValidatorBoolean(array('required' => false)),
+      'is_activated' => new sfValidatorBoolean(array('required' => false)),
       'email'        => new sfValidatorString(array('max_length' => 255)),
       'expires_at'   => new sfValidatorDateTime(),
       'created_at'   => new sfValidatorDateTime(),
       'updated_at'   => new sfValidatorDateTime(),
     ));
+
+    $this->validatorSchema->setPostValidator(
+      new sfValidatorDoctrineUnique(array('model' => 'JobeetJob', 'column' => array('token')))
+    );
 
     $this->widgetSchema->setNameFormat('jobeet_job[%s]');
 
